@@ -4,6 +4,8 @@ import org.example.entity.Article;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,11 +14,11 @@ import java.util.Optional;
 public class ArticleRepository {
 
     @Autowired
-    private DynamoDbEnhancedClient enhancedClient;
+    private DynamoDbTable<Article> articleTable;
 
     // Create a new article
     public void addArticle(Article article) {
-
+        articleTable.putItem(article);
     }
 
     // Retrieve all articles
@@ -25,17 +27,18 @@ public class ArticleRepository {
     }
 
     // Retrieve an article by id
-    public Optional<Article> getArticleById(int id) {
+    public Optional<Article> getArticleById(String id) {
+//        return articleTable.getItem(null);
         return null;
     }
 
     // Update an article
-    public boolean updateArticle(int id, Article newArticle) {
+    public boolean updateArticle(String id, Article newArticle) {
         return true;
     }
 
     // Delete an article by id
-    public boolean deleteArticle(int id) {
+    public boolean deleteArticle(String id) {
         return true;
     }
 }

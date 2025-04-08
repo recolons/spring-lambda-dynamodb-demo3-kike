@@ -31,14 +31,14 @@ public class ArticleController {
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<Article> getArticleById(@PathVariable int id) {
+    public ResponseEntity<Article> getArticleById(@PathVariable String id) {
         Optional<Article> article = articleRepository.getArticleById(id);
         return article.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
-    public ResponseEntity<Article> updateArticle(@PathVariable int id, @RequestBody Article newArticle) {
+    public ResponseEntity<Article> updateArticle(@PathVariable String id, @RequestBody Article newArticle) {
         boolean updated = articleRepository.updateArticle(id, newArticle);
         if (updated) {
             return new ResponseEntity<>(newArticle, HttpStatus.OK);
@@ -48,7 +48,7 @@ public class ArticleController {
     }
 
     @DeleteMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<Void> deleteArticle(@PathVariable int id) {
+    public ResponseEntity<Void> deleteArticle(@PathVariable String id) {
         boolean deleted = articleRepository.deleteArticle(id);
         if (deleted) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
