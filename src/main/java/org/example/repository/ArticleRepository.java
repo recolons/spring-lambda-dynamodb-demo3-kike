@@ -1,16 +1,22 @@
-package org.example.service;
+package org.example.repository;
 
-import org.example.dto.Article;
-import org.springframework.stereotype.Service;
+import org.example.entity.Article;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class ArticleService {
+@Repository
+public class ArticleRepository {
+
+    @Autowired
+    private DynamoDbEnhancedClient enhancedClient;
 
     // Create a new article
     public void addArticle(Article article) {
+
     }
 
     // Retrieve all articles
