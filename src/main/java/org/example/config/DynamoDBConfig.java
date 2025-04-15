@@ -20,10 +20,12 @@ public class DynamoDBConfig {
         return enhancedClient().table("articles", TableSchema.fromBean(Article.class));
     }
 
+    @Bean
     public DynamoDbEnhancedClient enhancedClient() {
         return DynamoDbEnhancedClient.builder().dynamoDbClient(standardClient()).build();
     }
 
+    @Bean
     public DynamoDbClient standardClient() {
         return DynamoDbClient.builder().credentialsProvider(EnvironmentVariableCredentialsProvider.create()).region(region)
                 .build();

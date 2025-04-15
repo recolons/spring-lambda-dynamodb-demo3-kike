@@ -13,11 +13,8 @@ import java.util.Optional;
 @Repository
 public class ArticleRepository {
 
-//    @Autowired
-//    private DynamoDbEnhancedClient enhancedClient;
     @Autowired
     private DynamoDbTable<Article> articleTable;
-//    = enhancedClient.table("articles", TableSchema.fromBean(Article.class));
 
     // Create a new article
     public void addArticle(Article article) {
@@ -26,22 +23,32 @@ public class ArticleRepository {
 
     // Retrieve all articles
     public List<Article> getAllArticles() {
-        return null;
+        return articleTable.scan().items().stream().toList();
     }
 
     // Retrieve an article by id
     public Optional<Article> getArticleById(String id) {
-//        return articleTable.getItem(null);
-        return null;
+        Article article = articleTable.getItem(r -> r.key(k -> k.partitionValue(id)));
+        return Optional.ofNullable(article);
     }
 
     // Update an article
     public boolean updateArticle(String id, Article newArticle) {
-        return true;
+        Article existingArticle = articleTable.getItem(r -> r.key(k -> k.partitionValue(id)));
+        if (existingArticle != null) {
+            articleTable.putItem(newArticle);
+            return true;
+        }
+        return false;
     }
 
     // Delete an article by id
     public boolean deleteArticle(String id) {
-        return true;
+        Article article = articleTable.getItem(r -> r.key(k -> k.partitionValue(id)));
+        if (article != null) {
+            articleTable.deleteItem(r -> r.key(k -> k.partitionValue(id)));
+            return true;
+        }
+        return false;
     }
 }
