@@ -15,25 +15,38 @@ public class DynamoDBConfig {
 
     Region region = Region.US_EAST_1;
 
-    DynamoDbClient standardClient = DynamoDbClient.builder()
-            .region(region)
-            .credentialsProvider(ProfileCredentialsProvider.create())
-            .build();
+    @Bean
+    public DynamoDbTable<Article> articleTable() {
+        return enhancedClient().table("articles", TableSchema.fromBean(Article.class));
+    }
 
-////    @Bean
+    public DynamoDbEnhancedClient enhancedClient() {
+        return DynamoDbEnhancedClient.builder().dynamoDbClient(standardClient()).build();
+    }
+
+    public DynamoDbClient standardClient() {
+        return DynamoDbClient.builder().credentialsProvider(ProfileCredentialsProvider.create()).region(region)
+                .build();
+    }
+//    DynamoDbClient standardClient = DynamoDbClient.builder()
+//            .region(region)
+//            .credentialsProvider(ProfileCredentialsProvider.create())
+//            .build();
+//
+//    @Bean
 //    public DynamoDbEnhancedClient enhancedClient() {
 //       return DynamoDbEnhancedClient.builder()
 //                .dynamoDbClient(standardClient)
 //                .build();
 
 
-    DynamoDbEnhancedClient enhancedClient = DynamoDbEnhancedClient.builder()
-                .dynamoDbClient(standardClient)
-                .build();
-
-    @Bean
-    public DynamoDbTable<Article> articleTable() {
-        return enhancedClient.table("articles", TableSchema.fromBean(Article.class));
-    }
+//    DynamoDbEnhancedClient enhancedClient = DynamoDbEnhancedClient.builder()
+//                .dynamoDbClient(standardClient)
+//                .build();
+//
+//    @Bean
+//    public DynamoDbTable<Article> articleTable() {
+//        return enhancedClient.table("articles", TableSchema.fromBean(Article.class));
+//    }
 }
 

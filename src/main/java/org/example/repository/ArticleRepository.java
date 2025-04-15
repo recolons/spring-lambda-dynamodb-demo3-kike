@@ -13,8 +13,11 @@ import java.util.Optional;
 @Repository
 public class ArticleRepository {
 
+//    @Autowired
+//    private DynamoDbEnhancedClient enhancedClient;
     @Autowired
     private DynamoDbTable<Article> articleTable;
+//    = enhancedClient.table("articles", TableSchema.fromBean(Article.class));
 
     // Create a new article
     public void addArticle(Article article) {
