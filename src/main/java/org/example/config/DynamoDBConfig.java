@@ -3,7 +3,7 @@ package org.example.config;
 import org.example.entity.Article;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
@@ -25,7 +25,7 @@ public class DynamoDBConfig {
     }
 
     public DynamoDbClient standardClient() {
-        return DynamoDbClient.builder().credentialsProvider(ProfileCredentialsProvider.create()).region(region)
+        return DynamoDbClient.builder().credentialsProvider(EnvironmentVariableCredentialsProvider.create()).region(region)
                 .build();
     }
 //    DynamoDbClient standardClient = DynamoDbClient.builder()
