@@ -9,6 +9,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @AllArgsConstructor
@@ -20,7 +21,7 @@ public class Article {
     private String headline;
     private String author;
     private String body;
-    private LocalDateTime date;
+    private String date;
 
     @DynamoDbAttribute("articleId")
     @DynamoDbPartitionKey
@@ -61,11 +62,20 @@ public class Article {
     }
 
     @DynamoDbAttribute("date")
-    public LocalDateTime getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(String date) {
         this.date = date;
+    }
+
+    // Helper methods for LocalDateTime conversion
+    public LocalDateTime getDateAsLocalDateTime() {
+        return date != null ? LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME) : null;
+    }
+
+    public void setDateAsLocalDateTime(LocalDateTime date) {
+        this.date = date != null ? date.format(DateTimeFormatter.ISO_DATE_TIME) : null;
     }
 }

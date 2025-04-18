@@ -13,7 +13,13 @@ Resources:
       Runtime: java21
       CodeUri: .
       MemorySize: 512
-      Policies: AWSLambdaBasicExecutionRole
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - DynamoDBCrudPolicy:
+            TableName: articles
+      Environment:
+        Variables:
+          AWS_REGION: us-east-1
       Timeout: 30
       Events:
         ProxyResource:
@@ -21,6 +27,17 @@ Resources:
           Properties:
             Path: /{proxy+}
             Method: any
+  ArticlesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: articles
+      AttributeDefinitions:
+        - AttributeName: articleId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: articleId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
 
 Outputs:
   SpringLambdaDynamodbDemo3KikeApi:
